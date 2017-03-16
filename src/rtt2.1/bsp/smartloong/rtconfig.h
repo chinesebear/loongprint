@@ -226,5 +226,5 @@
 // </section>
 
 // </RDTConfigurator>
-
+#define RT_USING_SPI
 #endif
