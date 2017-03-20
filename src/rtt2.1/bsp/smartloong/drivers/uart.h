@@ -18,7 +18,7 @@
 
 #include "ls1c.h"
 
-#define DEV_CLK 252000000 // 252MHz
+#define DEV_CLK SYS_DEV_CLK // 252MHz
 #define UART_BAUDRATE 115200 
 
 #define UART0_BASE			0xBFE40000

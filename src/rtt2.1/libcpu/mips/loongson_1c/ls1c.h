@@ -18,6 +18,9 @@
 
 #include "../common/mipsregs.h"
 
+#define SYS_DEV_CLK 252000000 // 252MHz
+
+
 #define LS1C_ACPI_IRQ	0
 #define LS1C_HPET_IRQ	1
 #define LS1C_UART0_IRQ	2

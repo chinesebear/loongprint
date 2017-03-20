@@ -64,8 +64,8 @@
 /*-----------------------------------------------------------------------------
 |   prototypes
 +----------------------------------------------------------------------------*/
- rt_err_t ls1c_spi_configure(struct rt_spi_device *device, struct rt_spi_configuration *configuration);
- rt_uint32_t ls1c_spi_xfer(struct rt_spi_device *device, struct rt_spi_message *message);
+ rt_err_t rt_ls1x_spi_configure(struct rt_spi_device *device, struct rt_spi_configuration *configuration);
+ rt_uint32_t rt_ls1x_spi_xfer(struct rt_spi_device *device, struct rt_spi_message *message);
 
 /*
 *******************************************************************************
