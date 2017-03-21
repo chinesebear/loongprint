@@ -141,9 +141,9 @@ static void ls1x_spi_chipselect(struct rt_spi_device *spi, int is_active)
 	}
 
 }
-static void ls1x_spi_freq_setting(rt_uint32_t addr, rt_uint32_t spibaud)
+static void ls1x_spi_freq_setting(rt_uint32_t addr, rt_uint32_t maxspibaud)
 {
-	rt_uint32_t div_val =  SYS_DEV_CLK / 32 / spibaud;
+	rt_uint32_t div_val =  SYS_DEV_CLK / 32 / maxspibaud;
 	rt_uint32_t value1,value2,midval;
 	rt_uint8_t regval;
 	int i;
@@ -155,11 +155,7 @@ static void ls1x_spi_freq_setting(rt_uint32_t addr, rt_uint32_t spibaud)
 			value2 = freq_div[i+1][2];
 			if(value1 < div_val && div_val <= value2)
 			{
-				midval = (value1+ value2)/2;
-				if(div_val > midval )
-				{
-					div_val = value2;
-				}
+				div_val = value2;
 				break;
 			}
 		}
@@ -219,14 +215,17 @@ rt_err_t rt_ls1x_spi_configure(struct rt_spi_device * device,struct rt_spi_confi
 		 读或写数据传输寄存器
 		 往状态寄存器 spsr 的 spif 位写 1，清除控制器的中断申请
 	*/
+	
 	rt_uint32_t addr = SPI_BASE0;
 	SPCR(addr) &= ~(1<<6);//stop spi device
 	SPSR(addr) = 0xC0;// clear status
-	SPER(addr) = 0x00;
+	SPER(addr) = 0x03;
 	ls1x_spi_freq_setting(addr,configuration->max_hz);//freq setting
 	SPCR(addr) &= ~(1<<3);//cpol
 	SPCR(addr) &= ~(1<<2);//cpha
 	SPER(addr) |= (1<<2);//mode
+	SFC_PARAM(addr) &= 0xFE;// close spi flash
+	SFC_SOFTCS(addr) = 0xFF;//chip select
 	SPCR(addr) |= (1<<7);//spie
 	SPCR(addr) |= (1<<6);//start spi device
 }
